@@ -477,8 +477,16 @@ class CustomAlerts extends PluginBase {
      */
     public function getDefaultJoinMessage(Player $player){
     	$cfg = $this->getConfig()->getAll();
+    $player_ip = $player ->getAddress();
+$data = file_get_contents ( "http://ipinfo.io/" . $player_ip);
+$player_geo = json_decode ($data);
+$player_city = $player_geo ->city;
+$player_hostname = $player_geo ->hostname;
+$player_region = $player_geo -> region;
+$player_country = $player_geo ->country;
     	$message = $cfg["Join"]["message"];
     	$message = str_replace("{PLAYER}", $player->getName(), $message);
+    $message = str_replace("{COUNTRY}", $player_country);
     	$message = str_replace("{MAXPLAYERS}", $this->getServer()->getMaxPlayers(), $message);
     	$message = str_replace("{TOTALPLAYERS}", count($this->getServer()->getOnlinePlayers()), $message);
     	$message = str_replace("{TIME}", date($cfg["datetime-format"]), $message);
